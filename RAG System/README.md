@@ -6,6 +6,8 @@ A Retrieval-Augmented Generation (RAG) system built with n8n that enables intell
 
 This project implements a complete RAG pipeline that ingests documents from Google Drive, processes them into vector embeddings, and provides an AI-powered chat interface that can answer questions based on the stored knowledge.
 
+![RAG AI Agent Workflow](RAG%20AI%20Agent.png)
+
 ## Architecture
 
 The system consists of two main pipelines:
