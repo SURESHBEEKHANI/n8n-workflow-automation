@@ -1,0 +1,356 @@
+{
+  "name": "RAG AI Agent",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -2320,
+        -304
+      ],
+      "id": "8f934be8-33e4-4ade-a70d-b7a3dce0e52a",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "1tCjEZGYO_01qzAfNNmAdaleYcMUsnKNp-AOE8OZag5g",
+          "mode": "list",
+          "cachedResultName": " LLM FOUNDATIONS & TRA...",
+          "cachedResultUrl": "https://docs.google.com/document/d/1tCjEZGYO_01qzAfNNmAdaleYcMUsnKNp-AOE8OZag5g/edit?usp=drivesdk"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -2064,
+        -304
+      ],
+      "id": "1031e3e5-1cf5-44c1-a9e0-040a9efacf8e",
+      "name": "file-download-gdrive",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "cRdk1DSKPofPNjOb",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "pineconeIndex": {
+          "__rl": true,
+          "value": "rag",
+          "mode": "list",
+          "cachedResultName": "rag"
+        },
+        "embeddingBatchSize": 100,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
+      "typeVersion": 1.3,
+      "position": [
+        -1808,
+        -304
+      ],
+      "id": "6a747fcb-c7ef-45eb-9269-67a007270457",
+      "name": "Pinecone Vector Store",
+      "credentials": {
+        "pineconeApi": {
+          "id": "a6XHjjhaheXdQQJw",
+          "name": "PineconeApi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsHuggingFaceInference",
+      "typeVersion": 1,
+      "position": [
+        -1984,
+        256
+      ],
+      "id": "2fd28a85-94bd-48fb-a262-5d49166c14fe",
+      "name": "Embeddings HuggingFace Inference",
+      "credentials": {
+        "huggingFaceApi": {
+          "id": "KwGIM0D5SonzQuQ8",
+          "name": "HuggingFaceApi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "dataType": "binary",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1.1,
+      "position": [
+        -1616,
+        -96
+      ],
+      "id": "7bf96868-b5cd-4df6-9426-e841ca9cb4d9",
+      "name": "Default Data Loader"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -1136,
+        -288
+      ],
+      "id": "8d170507-3e10-4940-b54b-c0ad4dc7bd7c",
+      "name": "When chat message received",
+      "webhookId": "f8078f38-949d-4411-b625-b952527fdc86"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        -720,
+        -288
+      ],
+      "id": "bb03e0bd-4615-4072-8f68-06220f731abb",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolDescription": "Retrieve chat  query from input ",
+        "pineconeIndex": {
+          "__rl": true,
+          "value": "rag",
+          "mode": "list",
+          "cachedResultName": "rag"
+        },
+        "topK": 3,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
+      "typeVersion": 1.3,
+      "position": [
+        -496,
+        192
+      ],
+      "id": "fdb1c18f-3e4e-4a1f-8384-ac0d3b3b194f",
+      "name": "Pinecone Vector Store1",
+      "credentials": {
+        "pineconeApi": {
+          "id": "a6XHjjhaheXdQQJw",
+          "name": "PineconeApi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -816,
+        80
+      ],
+      "id": "fa095edc-3e59-451c-9a00-a3a14e00e860",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "KH0AZWSHHmvt94SC",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -592,
+        16
+      ],
+      "id": "27323550-2243-4d58-a895-6283c193e9b3",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 1248,
+        "width": 2368,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -2576,
+        -816
+      ],
+      "typeVersion": 1,
+      "id": "ad84548f-97ed-426f-ae8f-ab1a2326e003",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "#  Pipeline 1:\n## Here are the key functions of the two pipelines in very brief text notes:\n\n## Pipeline 1: Data Ingestion (Left)\n## Download File: Retrieves document from Google Drive.\n\n## Chunk & Split: Extracts text, then divides it into smaller, manageable chunks.\n\n## Embeddings: Converts each text chunk into a numerical vector using a Hugging Face model.\n\n## Storage: Stores the vectors and corresponding text in the Pinecone Vector Store.\n\nPipeline 2: AI Agent (Right)",
+        "height": 400,
+        "width": 976,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -2480,
+        -720
+      ],
+      "typeVersion": 1,
+      "id": "0d5c211e-b167-401e-8210-d60a8f16bfbd",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "# Pipeline 2: \n\n## User Query: Activated by a new chat message.\n\n## Agent Orchestration: The AI Agent uses Simple Memory for conversation history.\n\n## Retrieval: The Agent uses the Pinecone Vector Store as a tool to search for relevant text chunks based on the user's query.\n\n## Generation: The Google Gemini Chat Model receives the retrieved context and the user query to formulate a final, grounded conversational response.",
+        "height": 400,
+        "width": 1232,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1456,
+        -720
+      ],
+      "typeVersion": 1,
+      "id": "12785239-258c-4102-890f-9df96be3f083",
+      "name": "Sticky Note4"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "file-download-gdrive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "file-download-gdrive": {
+      "main": [
+        [
+          {
+            "node": "Pinecone Vector Store",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings HuggingFace Inference": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Pinecone Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          },
+          {
+            "node": "Pinecone Vector Store1",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Pinecone Vector Store",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pinecone Vector Store1": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "c37d2bef-e721-4b16-9242-0f86cb5e5835",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "de69231320b120eee9e56f70e188cb0e5bd0f163ee845d0a89f524dcfd6f8fca"
+  },
+  "id": "AamoWlT0lupTdEgg",
+  "tags": [
+    {
+      "updatedAt": "2025-11-18T10:08:46.761Z",
+      "createdAt": "2025-11-18T10:08:46.761Z",
+      "id": "JF09aOGeg283R27z",
+      "name": "AI AGENT"
+    },
+    {
+      "updatedAt": "2025-11-18T10:08:32.650Z",
+      "createdAt": "2025-11-18T10:08:32.650Z",
+      "id": "oZVlgIFR0Rn33tBA",
+      "name": "RAG"
+    }
+  ]
+}
