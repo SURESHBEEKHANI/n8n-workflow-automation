@@ -1,0 +1,345 @@
+{
+  "name": "Automated Invoice Reminder System",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -640,
+        -16
+      ],
+      "id": "9aba1d02-adab-4fc2-b94b-2473b2f3168d",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 656,
+        "width": 1504,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -896,
+        -320
+      ],
+      "typeVersion": 1,
+      "id": "be740654-6d0d-42cd-a94d-43ecca006e30",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1Wlcruv5cuVsFq_eXTy2AH1dMoz-Iga6uDZiWrwOt79o",
+          "mode": "list",
+          "cachedResultName": "Invoice ",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Wlcruv5cuVsFq_eXTy2AH1dMoz-Iga6uDZiWrwOt79o/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 281044000,
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Wlcruv5cuVsFq_eXTy2AH1dMoz-Iga6uDZiWrwOt79o/edit#gid=281044000"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -416,
+        -16
+      ],
+      "id": "615e0a96-c894-4df0-b4b9-34cb1bce8771",
+      "name": "Get Invoice Data",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "oqa0j3n6g9fFLr6y",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "5054d908-285e-44f9-8886-9b0ba1bacf25",
+              "leftValue": "={{ $json['Payment Status'] }}",
+              "rightValue": "Paid",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            },
+            {
+              "id": "c945f8d5-c5fb-4da7-9b3d-8d8bdfd05e78",
+              "leftValue": "",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        -192,
+        -16
+      ],
+      "id": "d8664c7d-ea69-469e-a13d-30f89a9c0780",
+      "name": "Filter Data Overdue Unpaid"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json['Payment Status'] }}",
+                    "rightValue": "Unpaid",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "4e3bb916-1454-440a-8fb8-657debeb37b5"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "c8cb40aa-fca7-42a2-9f70-6144923835c5",
+                    "leftValue": "={{ $json['Payment Status'] }}",
+                    "rightValue": "Overdue",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        32,
+        -32
+      ],
+      "id": "faf6d4ad-41b1-435d-942c-16b934cd1eee",
+      "name": "Create Data Group Unpaid & Overdue & Ambigouse"
+    },
+    {
+      "parameters": {
+        "sendTo": "sureshbeekhani26@gmail.com",
+        "subject": "ambigouse  Invoice",
+        "message": "=Hi plesae this inovice  {{ $json['Due Date'] }} {{ $json['Customer Name'] }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        256,
+        176
+      ],
+      "id": "19ff04bb-6331-49ae-aeb9-bb39695a04ba",
+      "name": "Send Email Team Data Ambigouse",
+      "webhookId": "7bf2207c-49f7-4f13-a153-87aba93e2172",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "tw9V5TOyP6qTfGlj",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json['Customer Email'] }}",
+        "subject": "=Payment Reminder – Invoice Due",
+        "message": "=Dear {{ $json['Customer Name'] }},\n\nI hope this message finds you well. This is a friendly reminder that your invoice is due on {{ $json['Invoice Due'] }}. We kindly request you to ensure the payment is completed by the due date to avoid any late fees or service interruptions.\n\nIf you have already made the payment, please disregard this message. Otherwise, please reach out if you have any questions or need assistance.\n\nThank you for your prompt attention to this matter.\n\nBest regards,\n[Your Name]\n[Your Company Name]\n[Contact Information]",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        256,
+        -208
+      ],
+      "id": "5d0b32a9-92fe-45ab-9eef-c4fafa46451b",
+      "name": "Send Email Unpaid User",
+      "webhookId": "6c83bf84-70bf-4454-9d9b-892bd08d75b5",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "tw9V5TOyP6qTfGlj",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json['Customer Email'] }}",
+        "subject": "Overdue Invoice Notice – Action Required",
+        "message": "=Dear {{ $json['Customer Name'] }},\n\nWe hope you are doing well. Our records indicate that your invoice, originally due on {{ $json['Invoice Due'] }}, is now overdue. We kindly request that you make the payment at your earliest convenience to avoid any late fees or service interruptions.\n\nIf you have already completed the payment, please disregard this notice. Otherwise, feel free to reach out if you have any questions or require assistance.\n\nThank you for your prompt attention to this matter.\n\nBest regards,\n[Your Name]\n[Your Company Name]\n[Contact Information]",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        256,
+        -16
+      ],
+      "id": "7236b8ac-1999-4058-a3e2-97bd4459a219",
+      "name": "Send Email Overdue User",
+      "webhookId": "8513e652-e368-4809-8e2a-a35ea1390a1d",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "tw9V5TOyP6qTfGlj",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "### 1. Trigger: Start workflow manually.\n### 2. Get Data: Read invoices from Sheet.\n### 3. Filter: Keep only overdue + unpaid.\n### 4. Group: Split into Unpaid, Overdue, Ambiguous.\n### 5 .Emails: Send correct email to each group.",
+        "height": 176,
+        "width": 448,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -368,
+        -208
+      ],
+      "typeVersion": 1,
+      "id": "0d26bcd3-6108-40b7-b863-11ca022e619c",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Automated Invoice Reminder System",
+        "height": 80,
+        "width": 448,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -368,
+        -288
+      ],
+      "typeVersion": 1,
+      "id": "62857650-66f3-4ac7-9a58-01e139b503b7",
+      "name": "Sticky Note2"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Get Invoice Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Invoice Data": {
+      "main": [
+        [
+          {
+            "node": "Filter Data Overdue Unpaid",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter Data Overdue Unpaid": {
+      "main": [
+        [
+          {
+            "node": "Create Data Group Unpaid & Overdue & Ambigouse",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Data Group Unpaid & Overdue & Ambigouse": {
+      "main": [
+        [
+          {
+            "node": "Send Email Unpaid User",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Email Overdue User",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Email Team Data Ambigouse",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "52b5f7fa-ff63-4dd0-b568-9c9d9eeafbcc",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "de69231320b120eee9e56f70e188cb0e5bd0f163ee845d0a89f524dcfd6f8fca"
+  },
+  "id": "LUqX0zyWDjSGVSmx",
+  "tags": []
+}
