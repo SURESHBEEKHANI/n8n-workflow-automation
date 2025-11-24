@@ -1,0 +1,619 @@
+{
+  "name": "Gemini File Search",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Doc Upload",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "File",
+              "fieldType": "file",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.3,
+      "position": [
+        288,
+        112
+      ],
+      "id": "194eef3d-1802-41dc-afbc-3a2f7013e0fa",
+      "name": "On form submission",
+      "webhookId": "2e20e6c8-8736-44d5-83c5-a9f2eae405f4"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -480,
+        128
+      ],
+      "id": "bfd6b100-640e-4f4a-9561-392ba05ffebb",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/v1beta/fileSearchStores",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpQueryAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "displayName",
+              "value": "test-file"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -80,
+        128
+      ],
+      "id": "7e2f1682-9c00-4b44-b1a9-5d2bd2dedf2f",
+      "name": "Create File Store",
+      "credentials": {
+        "httpQueryAuth": {
+          "id": "FkBv1MbMZuxLZ5Mc",
+          "name": "Query Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://generativelanguage.googleapis.com/upload/v1beta/files",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpQueryAuth",
+        "sendBody": true,
+        "contentType": "binaryData",
+        "inputDataFieldName": "File",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        512,
+        112
+      ],
+      "id": "81bbf16a-2520-4456-8ea6-e14b4484c99e",
+      "name": "Upload File",
+      "credentials": {
+        "httpQueryAuth": {
+          "id": "FkBv1MbMZuxLZ5Mc",
+          "name": "Query Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://generativelanguage.googleapis.com/v1beta/fileSearchStores/testfile-gnwqjpewbyhf:importFile\n",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpQueryAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "file_name",
+              "value": "={{ $json.file.name }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        720,
+        112
+      ],
+      "id": "fe9cf150-3ec8-447c-a96e-0bfdabe13ec8",
+      "name": "Import File",
+      "credentials": {
+        "httpQueryAuth": {
+          "id": "FkBv1MbMZuxLZ5Mc",
+          "name": "Query Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "source": "googleSheets",
+        "documentId": {
+          "__rl": true,
+          "value": "1zf9jK8OdSrV4qMLwBjqrfML2tPx2SJmdqmxa4QN5TXU",
+          "mode": "list"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1zf9jK8OdSrV4qMLwBjqrfML2tPx2SJmdqmxa4QN5TXU/edit#gid=0"
+        }
+      },
+      "type": "n8n-nodes-base.evaluationTrigger",
+      "typeVersion": 4.7,
+      "position": [
+        0,
+        512
+      ],
+      "id": "d680595a-ede5-439e-9aef-54f4c6cdc51f",
+      "name": "When fetching a dataset row",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "f8ZYrSVAwQMpHZjH",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "##  Create Store",
+        "height": 400,
+        "width": 768,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -592,
+        -16
+      ],
+      "id": "3f2da4e7-f2e5-4781-9cdb-53dad584b426",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "##  Upload File\n",
+        "height": 400,
+        "width": 848,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        176,
+        -16
+      ],
+      "id": "adeb24fa-6c75-4958-a580-0acdde87f45d",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        1136,
+        48
+      ],
+      "id": "2f854069-77bb-440d-a039-46e42d4997b2",
+      "name": "When chat message received",
+      "webhookId": "f61815ce-f800-4913-a5d3-69303910022f"
+    },
+    {
+      "parameters": {
+        "content": "##  Query\n",
+        "height": 400,
+        "width": 1040,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1024,
+        -16
+      ],
+      "id": "977e1b03-dc3e-4e3e-adcc-8b85f2c72257",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "##  Query\n",
+        "height": 528,
+        "width": 2656,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -592,
+        384
+      ],
+      "id": "e0eaaf60-fbc0-4488-8d18-8745a053b305",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpQueryAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"contents\": [\n    {\n      \"parts\": [\n        {\n          \"text\": \"{{ $fromAI('query','the question the user needs an answer to') }}\"\n        }\n      ]\n    }\n  ],\n  \"tools\": [\n    {\n      \"file_search\": {\n        \"file_search_store_names\": [\n          \"fileSearchStores/testfile-gnwqjpewbyhf\"\n        ]\n      }\n    }\n  ]\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.3,
+      "position": [
+        896,
+        704
+      ],
+      "id": "1d966a26-6610-4ea3-af4b-99a2d1aea329",
+      "name": "Knowledge Base1",
+      "credentials": {
+        "httpQueryAuth": {
+          "id": "FkBv1MbMZuxLZ5Mc",
+          "name": "Query Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpQueryAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"contents\": [\n    {\n      \"parts\": [\n        {\n          \"text\": \"{{ $fromAI('query','the question the user needs an answer to') }}\"\n        }\n      ]\n    }\n  ],\n  \"tools\": [\n    {\n      \"file_search\": {\n        \"file_search_store_names\": [\n          \"fileSearchStores/testfile-gnwqjpewbyhf\"\n        ]\n      }\n    }\n  ]\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.3,
+      "position": [
+        1824,
+        224
+      ],
+      "id": "76f66639-ff52-4fc2-a672-5c108711e377",
+      "name": "Knowledge Base",
+      "credentials": {
+        "httpQueryAuth": {
+          "id": "FkBv1MbMZuxLZ5Mc",
+          "name": "Query Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "=You are a helpful RAG agent. Your job is to answer the user's question using your Knowledge Base tool to make sure all of your answers are grounded in truth. Please cite your sources when you're giving your answers. \n\nWhen you are sending a query to the Knowledge Base tool, only send over text. No punctuation, quotation marks, or new lines. "
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        1440,
+        32
+      ],
+      "id": "6c6bb7ba-f842-4327-82b6-5b5306c16889",
+      "name": "RAG Agent"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.Input }}",
+        "options": {
+          "systemMessage": "=You are a helpful RAG agent. Your job is to answer the user's question using your Knowledge Base tool to make sure all of your answers are grounded in truth. Please cite your sources when you're giving your answers. \n\nWhen you are sending a query to the Knowledge Base tool, only send over text. No punctuation, quotation marks, or new lines. "
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        656,
+        496
+      ],
+      "id": "3d8e3775-8185-4b2e-afed-920c34235944",
+      "name": "Eval Agent"
+    },
+    {
+      "parameters": {
+        "source": "googleSheets",
+        "documentId": {
+          "__rl": true,
+          "value": "1zf9jK8OdSrV4qMLwBjqrfML2tPx2SJmdqmxa4QN5TXU",
+          "mode": "list",
+          "cachedResultName": "RAG Evaluation",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1zf9jK8OdSrV4qMLwBjqrfML2tPx2SJmdqmxa4QN5TXU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ENf2i6156U9Y0mWG6ymhfmAv8sbsz7o7x9m3J21SZWM/edit#gid=0"
+        },
+        "outputs": {
+          "values": [
+            {
+              "outputName": "Score",
+              "outputValue": "={{ $json.Correctness }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.evaluation",
+      "typeVersion": 4.8,
+      "position": [
+        1680,
+        496
+      ],
+      "id": "d6c8f6c9-f26f-437d-98d8-d9b30b241225",
+      "name": "Set Metrics",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "f8ZYrSVAwQMpHZjH",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "setMetrics",
+        "expectedAnswer": "={{ $('When fetching a dataset row').item.json['Expected Answer'] }}",
+        "actualAnswer": "={{ $json.output }}",
+        "prompt": "=You are an expert factual evaluator assessing the accuracy of answers compared to established ground truths.\n\nEvaluate the factual correctness of a given output compared to the provided ground truth on a scale from 1 to 5. Use detailed reasoning to thoroughly analyze all claims before determining the final score.\n\n# Scoring Criteria\n\n- 5: Highly similar - The output and ground truth are nearly identical, with only minor, insignificant differences.\n- 4: Somewhat similar - The output is largely similar to the ground truth but has few noticeable differences.\n- 3: Moderately similar - There are some evident differences, but the core essence is captured in the output.\n- 2: Slightly similar - The output only captures a few elements of the ground truth and contains several differences.\n- 1: Not similar - The output is significantly different from the ground truth, with few or no matching elements.\n\n# Evaluation Steps\n\n1. Identify and list the key elements present in both the output and the ground truth.\n2. Compare these key elements to evaluate their similarities and differences, considering both content and structure.\n3. Analyze the semantic meaning conveyed by both the output and the ground truth, noting any significant deviations.\n4. Consider factual accuracy of specific details, including names, dates, numbers, and relationships.\n5. Assess whether the output maintains the factual integrity of the ground truth, even if phrased differently.\n6. Determine the overall level of similarity and accuracy according to the defined criteria.\n\n# Output Format\n\nProvide:\n- A detailed analysis of the comparison (extended reasoning)\n- A one-sentence summary highlighting key differences (not similarities)\n- The final similarity score as an integer (1, 2, 3, 4, or 5)\n\nAlways follow the JSON format below and return nothing else:\n{\n  \"extended_reasoning\": \"<detailed step-by-step analysis of factual accuracy and similarity>\",\n  \"reasoning_summary\": \"<one sentence summary focusing on key differences>\",\n  \"score\": <number: integer from 1 to 5>\n}\n\n# Examples\n\n**Example 1:**\n\nInput:\n- Output: \"The cat sat on the mat.\"\n- Ground Truth: \"The feline is sitting on the rug.\"\n\nExpected Output:\n{\n  \"extended_reasoning\": \"I need to compare 'The cat sat on the mat' with 'The feline is sitting on the rug.' First, let me identify the key elements: both describe an animal ('cat' vs 'feline') in a position ('sat' vs 'sitting') on a surface ('mat' vs 'rug'). The subject is semantically identical - 'cat' and 'feline' refer to the same animal. The action is also semantically equivalent - 'sat' and 'sitting' both describe the same position, though one is past tense and one is present continuous. The location differs in specific wording ('mat' vs 'rug') but both refer to floor coverings that serve the same function. The basic structure and meaning of both sentences are preserved, though they use different vocabulary and slightly different tense. The core information being conveyed is the same, but there are noticeable wording differences.\",\n  \"reasoning_summary\": \"The sentences differ in vocabulary choice ('cat' vs 'feline', 'mat' vs 'rug') and verb tense ('sat' vs 'is sitting').\",\n  \"score\": 3\n}\n\n**Example 2:**\n\nInput:\n- Output: \"The quick brown fox jumps over the lazy dog.\"\n- Ground Truth: \"A fast brown animal leaps over a sleeping canine.\"\n\nExpected Output:\n{\n  \"extended_reasoning\": \"I need to compare 'The quick brown fox jumps over the lazy dog' with 'A fast brown animal leaps over a sleeping canine.' Starting with the subjects: 'quick brown fox' vs 'fast brown animal'. Both describe the same entity (a fox is a type of animal) with the same attributes (quick/fast and brown). The action is described as 'jumps' vs 'leaps', which are synonymous verbs describing the same motion. The object in both sentences is a dog, described as 'lazy' in one and 'sleeping' in the other, which are related concepts (a sleeping dog could be perceived as lazy). The structure follows the same pattern: subject + action + over + object. The sentences convey the same scene with slightly different word choices that maintain the core meaning. The level of specificity differs slightly ('fox' vs 'animal', 'dog' vs 'canine'), but the underlying information and imagery remain very similar.\",\n  \"reasoning_summary\": \"The sentences use different but synonymous terminology ('quick' vs 'fast', 'jumps' vs 'leaps', 'lazy' vs 'sleeping') and varying levels of specificity ('fox' vs 'animal', 'dog' vs 'canine').\",\n  \"score\": 4\n}\n\n# Notes\n\n- Focus primarily on factual accuracy and semantic similarity, not writing style or phrasing differences.\n- Identify specific differences rather than making general assessments.\n- Pay special attention to dates, numbers, names, locations, and causal relationships when present.\n- Consider the significance of each difference in the context of the overall information.\n- Be consistent in your scoring approach across different evaluations.",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.evaluation",
+      "typeVersion": 4.8,
+      "position": [
+        1168,
+        496
+      ],
+      "id": "c79aa3be-f1f1-44dd-a524-97d163943d67",
+      "name": "Evaluation"
+    },
+    {
+      "parameters": {
+        "content": "# 🛠️ Setup Guide  \n**Author:** [Nate Herk](https://www.youtube.com/@nateherk)\n\nFollow the steps below to get this Gemini-powered file Q&A system running smoothly:\n\n## ✅ Step 1: Get Your [Gemini API Key](https://aistudio.google.com/app/apikey)  \nGrab your Gemini API key and plug it into the HTTP Request node that powers the agent's responses.\n\n## ✅ Step 2: Link Your File Store  \nMake sure the **name of your file store** is correctly linked in both the `Import File` HTTP Request and the `Knowledge Base` HTTP Request. This ensures your documents get stored and referenced properly.\n\n## ✅ Step 3: Upload Your PDFs  \nChoose the PDFs you want to use for testing. If you want to use the same ones from the tutorial, check the Skool post where I’ve uploaded all three.\n\n## ✅ Step 4: Query the Agent  \nStart chatting with your agent and test out the responses. If you're feeling adventurous, run an evaluation to dig deeper into how well it’s working.\n\nIf you want to run the evaluation, you can also use the same **Google Sheet sample dataset** I used.  \n👉 [Click here to make a copy](https://docs.google.com/spreadsheets/d/1zf9jK8OdSrV4qMLwBjqrfML2tPx2SJmdqmxa4QN5TXU/copy)\n\n\n",
+        "height": 592,
+        "width": 2656
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -592,
+        -624
+      ],
+      "id": "0dc610dc-1978-442d-9d12-aa5d2069626f",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1328,
+        224
+      ],
+      "id": "eeda8188-4bcb-4c51-a080-c259032bce73",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "bsOYXZU8a7iTW7iB",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1184,
+        720
+      ],
+      "id": "631d395e-d5d0-4079-a4eb-d27eb5b03cfd",
+      "name": "Google Gemini Chat Model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "bsOYXZU8a7iTW7iB",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        528,
+        704
+      ],
+      "id": "9ef2dd75-8d25-4951-b67e-96df30f12096",
+      "name": "Google Gemini Chat Model2",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "bsOYXZU8a7iTW7iB",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Upload File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Create File Store",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload File": {
+      "main": [
+        [
+          {
+            "node": "Import File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When fetching a dataset row": {
+      "main": [
+        [
+          {
+            "node": "Eval Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "RAG Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Knowledge Base1": {
+      "ai_tool": [
+        [
+          {
+            "node": "Eval Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Knowledge Base": {
+      "ai_tool": [
+        [
+          {
+            "node": "RAG Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Eval Agent": {
+      "main": [
+        [
+          {
+            "node": "Evaluation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Evaluation": {
+      "main": [
+        [
+          {
+            "node": "Set Metrics",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "RAG Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Evaluation",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Eval Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "versionId": "5f4e2081-d19c-4e03-a013-02e35286d8eb",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "f4f2fd057180b782b5fd52233f4e9a37d55cb1fbc2a6ed181e3c4f4ae60ebfc8"
+  },
+  "id": "2HA16KVmBu2fIprG",
+  "tags": []
+}
