@@ -18,6 +18,13 @@ A powerful document Q&A system using Google Gemini's file search capabilities. U
 
 ---
 
+### Nano Banana Pro
+An advanced AI-powered image generation workflow supporting text-to-image, image-to-image transformation, and multi-image composition with 4K quality output.
+
+[View Documentation →](Nano%20Banana%20Pro/README.md)
+
+---
+
 ### RAG AI Agent
 A complete Retrieval-Augmented Generation (RAG) system that enables intelligent document-based conversations using vector embeddings and AI chat capabilities.
 
